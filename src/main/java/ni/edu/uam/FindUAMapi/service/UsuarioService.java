@@ -1,6 +1,7 @@
 package ni.edu.uam.FindUAMapi.service;
 
 import ni.edu.uam.FindUAMapi.Models.Usuario;
+import ni.edu.uam.FindUAMapi.Models.Publicacion;
 import ni.edu.uam.FindUAMapi.Repository.UsuarioRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,12 @@ public class UsuarioService {
 			Usuario existente = repo.findById(usuario.getId()).orElse(null);
 			if (existente != null && (usuario.getContrasena() == null || usuario.getContrasena().isBlank())) {
 				usuario.setContrasena(existente.getContrasena());
+			}
+		}
+
+		if (usuario.getPublicaciones() != null) {
+			for (Publicacion publicacion : usuario.getPublicaciones()) {
+				publicacion.setUsuario(usuario);
 			}
 		}
 
