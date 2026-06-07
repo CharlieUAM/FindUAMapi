@@ -1,7 +1,9 @@
 package ni.edu.uam.FindUAMapi.controller;
 
+import ni.edu.uam.FindUAMapi.dto.LoginRequest;
 import ni.edu.uam.FindUAMapi.entity.Usuario;
 import ni.edu.uam.FindUAMapi.repository.UsuarioRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,5 +30,26 @@ public class UsuarioController {
             @RequestBody Usuario usuario) {
 
         return repository.save(usuario);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<Usuario> login(
+            @RequestBody LoginRequest request) {
+
+        Usuario usuario =
+                repository.findByCorreoUam(
+                        request.getCorreoUam()
+                );
+
+        if (
+                usuario != null &&
+                        usuario.getPassword().equals(
+                                request.getPassword()
+                        )
+        ) {
+            return ResponseEntity.ok(usuario);
+        }
+
+        return ResponseEntity.notFound().build();
     }
 }
