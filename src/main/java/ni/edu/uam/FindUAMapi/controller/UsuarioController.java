@@ -36,6 +36,10 @@ public class UsuarioController {
     public ResponseEntity<Usuario> login(
             @RequestBody LoginRequest request) {
 
+        System.out.println("LOGIN RECIBIDO");
+        System.out.println(request.getCorreoUam());
+        System.out.println(request.getPassword());
+
         Usuario usuario =
                 repository.findByCorreoUam(
                         request.getCorreoUam()
