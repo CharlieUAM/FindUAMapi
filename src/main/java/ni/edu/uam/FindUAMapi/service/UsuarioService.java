@@ -27,6 +27,23 @@ public class UsuarioService {
 		return repo.findById(id).orElse(null);
 	}
 
+	public Usuario login(String correo, String contrasena) {
+		if (correo == null || contrasena == null) {
+			return null;
+		}
+
+		Usuario usuario = repo.findByCorreoIgnoreCase(correo.trim()).orElse(null);
+		if (usuario == null || usuario.getContrasena() == null) {
+			return null;
+		}
+
+		if (!passwordEncoder.matches(contrasena, usuario.getContrasena())) {
+			return null;
+		}
+
+		return usuario;
+	}
+
 	public Usuario save(Usuario usuario) {
 		if (usuario.getId() != null) {
 			Usuario existente = repo.findById(usuario.getId()).orElse(null);

@@ -1,7 +1,9 @@
 package ni.edu.uam.FindUAMapi.Models;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -37,10 +39,31 @@ public class Publicacion {
 	private String ubicacion;
 
 	@Column(name = "fecha_hora_publicacion", nullable = false)
+	@JsonAlias("fechaPublicacion")
 	private LocalDateTime fechaHora;
 
 	@Transient
 	private Long idUsuario;
+
+	@Transient
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+	private String nombre;
+
+	@Transient
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+	private String descripcion;
+
+	@Transient
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+	private String categoria;
+
+	@Transient
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+	private String fotoObjeto;
+
+	@Transient
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+	private Integer idCategoria;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_usuario", nullable = false)
