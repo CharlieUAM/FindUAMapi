@@ -7,5 +7,4 @@ public interface UsuarioRepository
         extends JpaRepository<Usuario, Integer> {
 
     Usuario findByCorreoUam(String correoUam);
-
 }
