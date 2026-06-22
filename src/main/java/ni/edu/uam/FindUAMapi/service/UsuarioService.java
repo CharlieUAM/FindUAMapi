@@ -38,6 +38,10 @@ public class UsuarioService {
 		if (usuario.getPublicaciones() != null) {
 			for (Publicacion publicacion : usuario.getPublicaciones()) {
 				publicacion.setUsuario(usuario);
+				if (publicacion.getObjeto() != null) {
+					publicacion.getObjeto().setPublicacion(publicacion);
+					publicacion.getObjeto().setId(publicacion.getId());
+				}
 			}
 		}
 

@@ -32,21 +32,33 @@ public class PublicacionService {
 	}
 
 	public Publicacion save(Publicacion publicacion) {
+		Publicacion existente = null;
+		if (publicacion.getId() != null) {
+			existente = repo.findById(publicacion.getId()).orElse(null);
+		}
+
 		if (publicacion.getFechaHora() == null) {
-			publicacion.setFechaHora(LocalDateTime.now());
+			if (existente != null && existente.getFechaHora() != null) {
+				publicacion.setFechaHora(existente.getFechaHora());
+			} else {
+				publicacion.setFechaHora(LocalDateTime.now());
+			}
 		}
 
 		if (publicacion.getIdUsuario() != null) {
 			Usuario usuario = usuarioRepository.findById(publicacion.getIdUsuario()).orElse(null);
 			publicacion.setUsuario(usuario);
-		} else if (publicacion.getId() != null) {
-			Publicacion existente = repo.findById(publicacion.getId()).orElse(null);
-			if (existente != null && publicacion.getUsuario() == null) {
-				publicacion.setUsuario(existente.getUsuario());
-			}
-			if (existente != null && publicacion.getFechaHora() == null) {
-				publicacion.setFechaHora(existente.getFechaHora());
-			}
+		} else if (publicacion.getUsuario() == null && existente != null) {
+			publicacion.setUsuario(existente.getUsuario());
+		}
+
+		if (publicacion.getObjeto() == null && existente != null) {
+			publicacion.setObjeto(existente.getObjeto());
+		}
+
+		if (publicacion.getObjeto() != null) {
+			publicacion.getObjeto().setPublicacion(publicacion);
+			publicacion.getObjeto().setId(publicacion.getId());
 		}
 
 		if (publicacion.getUsuario() != null) {

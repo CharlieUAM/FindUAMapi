@@ -46,7 +46,7 @@ public class Usuario {
 	private String contrasena;
 
 	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-	@JsonManagedReference
+	@JsonManagedReference("usuario-publicaciones")
 	private List<Publicacion> publicaciones = new ArrayList<>();
 
 	@Override
